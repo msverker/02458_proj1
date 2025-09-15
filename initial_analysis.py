@@ -32,6 +32,15 @@ def mean_image(image_path):
     # plt.show()
     return mean_img
 
+def extract_labels(image_path):
+    labels = []
+    for filename in os.listdir(image_path):
+        if filename.endswith('.jpg'):
+            parts = filename.split('_')
+            label = parts[-1].split('.')[0]
+            labels.append(int(label))
+    return np.array(labels)
+
 def PCA(image_path, mean_image):
     images = []
     mean_flat = mean_image.flatten()
@@ -45,13 +54,13 @@ def PCA(image_path, mean_image):
     pca_result = pca.fit_transform(images)
     explained_variance = pca.explained_variance_ratio_
 
-    plt.figure(figsize=(10, 5))
-    plt.bar(range(1, len(explained_variance) + 1), explained_variance, alpha=0.7, align='center')
-    plt.xlabel('Principal Component')
-    plt.ylabel('Variance Explained')
-    plt.title('PCA Explained Variance')
-    plt.xlim(1, 50)
-    plt.show()
+    # plt.figure(figsize=(10, 5))
+    # plt.bar(range(1, len(explained_variance) + 1), explained_variance, alpha=0.7, align='center')
+    # plt.xlabel('Principal Component')
+    # plt.ylabel('Variance Explained')
+    # plt.title('PCA Explained Variance')
+    # plt.xlim(1, 50)
+    # plt.show()
 
     components = pca.components_
     pc_1 = components[0]
@@ -60,20 +69,21 @@ def PCA(image_path, mean_image):
 
     img_min = mean_flat + min_score * pc_1
     img_max = mean_flat + max_score * pc_1
-    plt.figure(figsize=(15, 5))
-    plt.subplot(1, 3, 1)
-    plt.imshow(img_min.reshape(mean_image.shape) * 255, cmap='gray')
-    plt.title('Min weight added to PC1')
-    plt.axis('off')
-    plt.subplot(1, 3, 2)
-    plt.imshow(mean_image, cmap='gray')
-    plt.title('Mean Image')
-    plt.axis('off')
-    plt.subplot(1, 3, 3)
-    plt.imshow(img_max.reshape(mean_image.shape) * 255, cmap='gray')
-    plt.title('Max weight added to PC1')
-    plt.axis('off')
-    plt.show()
+    # plt.figure(figsize=(15, 5))
+    # plt.subplot(1, 3, 1)
+    # plt.imshow(img_min.reshape(mean_image.shape) * 255, cmap='gray')
+    # plt.title('Min weight added to PC1')
+    # plt.axis('off')
+    # plt.subplot(1, 3, 2)
+    # plt.imshow(mean_image, cmap='gray')
+    # plt.title('Mean Image')
+    # plt.axis('off')
+    # plt.subplot(1, 3, 3)
+    # plt.imshow(img_max.reshape(mean_image.shape) * 255, cmap='gray')
+    # plt.title('Max weight added to PC1')
+    # plt.axis('off')
+    # plt.show()
+    return pca_result
 
 
 
