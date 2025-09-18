@@ -69,6 +69,6 @@ def PCA(image_path, mean_image):
 
 
 if __name__ == "__main__":
-    image_path = 'subset'
+    image_path = 'subset/subset/'
     mean_img = mean_image(image_path)
     PCA(image_path, mean_img)

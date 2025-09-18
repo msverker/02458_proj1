@@ -33,12 +33,13 @@ def reconstruct_image_from_pcs(pca, pc_vector, image_shape, mean_image):
 
 
 if __name__ == "__main__":
-    image_path = 'subset'
+    image_path = 'subset/subset/'
     csv_path = 'Labels_Cognitive.csv'
     mean_img = mean_image(image_path)
     pca, pca_result = PCA(image_path, mean_img)
     pca_result = np.concatenate([pca_result, pca_result], axis=0)
     labels = label_data(csv_path)
+    labels = labels * 1.4 + 3
     X_train, X_test, y_train, y_test = train_test_split(pca_result, labels, test_size=0.15, random_state=42)
     
     model = LinearRegression()
@@ -61,5 +62,6 @@ if __name__ == "__main__":
         axes[i].imshow(synthetic_image, cmap='gray')
         axes[i].set_title(f"Rating {rating}")
         axes[i].axis('off')
+        plt.imsave(f"synthetic_images/synthetic_image_rating_{rating}.png", synthetic_image, cmap='gray')
     plt.tight_layout()
     plt.show()

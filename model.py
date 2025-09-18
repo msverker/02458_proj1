@@ -123,7 +123,7 @@ def plot_predicted_vs_features_colored(model, X_test, selected_features):
 
 
 if __name__ == "__main__":
-    image_path = 'subset'
+    image_path = 'subset/subset/'
     csv_path = 'Labels_Cognitive.csv'
     mean_img = mean_image(image_path)
     pca, pca_result = PCA(image_path, mean_img)
