@@ -56,39 +56,11 @@ def forward_selection(model, X_train, y_train, X_test, y_test, pcs, cv = 5):
 
     return mse_scores
 
-
-def plot_predicted_vs_features(model, X_test, selected_features):
-    """
-    Plots predicted ratings on the Y-axis vs. each selected feature on the X-axis.
-    """
-    X_test_selected = X_test[:, selected_features]
-    y_pred = model.predict(X_test_selected)
-
-    num_features = X_test_selected.shape[1]
-    plt.figure(figsize=(5 * num_features, 4))
-
-    for i in range(num_features):
-        plt.subplot(1, num_features, i + 1)
-        plt.scatter(X_test_selected[:, i], y_pred, alpha=0.6)
-        plt.xlabel(f"PC {selected_features[i]+1}")
-        plt.ylabel("Predicted Rating")
-        plt.title(f"Predicted Rating vs PC {selected_features[i]+1}")
-        plt.grid()
-
-    plt.tight_layout()
-    plt.show()
-
 def plot_predicted_vs_features_colored(model, X_test, selected_features):
-    """
-    Single scatter plot:
-    X-axis = feature values (all PCs stacked),
-    Y-axis = predicted rating,
-    Color = which PC the point came from.
-    """
+
     X_test_selected = X_test[:, selected_features]
     y_pred = model.predict(X_test_selected)
 
-    # Prepare data for stacked plot
     feature_values = []
     predicted_values = []
     feature_labels = []
@@ -108,7 +80,6 @@ def plot_predicted_vs_features_colored(model, X_test, selected_features):
                           c=[i for i in range(len(feature_labels))],
                           cmap='tab10', alpha=0.6)
 
-    # Build legend
     unique_labels = np.unique(feature_labels)
     colors = [scatter.cmap(scatter.norm(i)) for i in range(len(unique_labels))]
     handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=c, markersize=8)
@@ -133,11 +104,10 @@ if __name__ == "__main__":
     model = LinearRegression()
     forward_selection(model, X_train, y_train, X_test, y_test, pcs=10, cv = 5)
 
-    # best_n = 5  # for example
+    # best_n = 5
     # sfs = SequentialFeatureSelector(model, n_features_to_select=best_n, direction='forward', cv=5)
     # sfs.fit(X_train, y_train)
     # selected_features = sfs.get_support(indices=True)
 
     # model.fit(X_train[:, selected_features], y_train)
-    # # plot_predicted_vs_features(model, X_test, selected_features=selected_features)
     # plot_predicted_vs_features_colored(model, X_test, selected_features=selected_features)
